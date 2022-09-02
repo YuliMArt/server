@@ -1,6 +1,6 @@
 // Server Model: Contiene todo el servidor de express + socket.io configurado
 
-const { Server } = require('./server/server');
+const { Server } = require('./Server/server');
 
 
 
