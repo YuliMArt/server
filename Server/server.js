@@ -6,8 +6,8 @@ const socketio = require("socket.io");
 const fileUpload = require("express-fileupload");
 const Sockets = require("./sockets");
 const db = require("../database/conexion");
-const exp=express();
-const server=http.createServer(exp);
+const exp = express();
+const server = http.createServer(exp);
 const io = socketio(server, {
   cors: {
     origin: "*",
@@ -24,21 +24,19 @@ class Server {
     this.paths = {
       auth: "/api/auth",
       agentes: "/api/agente",
-     
     };
     this.server = server;
     // Conectar a base de datos
     this.conectarDB();
-  
+
     // Middlewares
     this.middlewares();
 
     // Rutas de mi aplicación
     this.routes();
     this.io = io;
- 
+    this.configurarSockets();
   }
- 
 
   async conectarDB() {
     try {
@@ -48,7 +46,7 @@ class Server {
       throw new Error(error);
     }
   }
-  configurarSockets() {
+  async configurarSockets() {
     new Sockets(this.io);
   }
   middlewares() {
@@ -91,12 +89,11 @@ class Server {
     // this.app.use(this.paths.roteos, require("../routes/roteos"));
   }
 
- execute() {
-    this.configurarSockets();
+  execute() {
     this.server.listen(this.port, () => {
       console.log("Servidor corriendo en puerto", this.port);
     });
   }
 }
 
-module.exports = {Server,io};
+module.exports = { Server, io };
